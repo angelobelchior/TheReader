@@ -1,0 +1,229 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:vm="clr-namespace:TheReader.ViewModels"
+             xmlns:m="clr-namespace:TheReader.Models"
+             xmlns:tr="clr-namespace:TheReader"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             BackgroundColor="Transparent"
+             x:Class="TheReader.Views.MainPage">
+
+    <ContentPage.BindingContext>
+        <vm:MainViewModel />
+    </ContentPage.BindingContext>
+
+    <Grid ColumnDefinitions="2*, 2*, 6*">
+
+        <Border Grid.Column="0"
+                BackgroundColor="#343434"
+                Padding="25">
+            <Grid RowDefinitions="80, 100, *">
+
+                <Rectangle Grid.Row="0" Fill="Blue" />
+
+                <Grid Grid.Row="1"
+                      Padding="10"
+                      ColumnDefinitions="Auto, *, Auto"
+                      RowDefinitions="40, 40"
+                      ColumnSpacing="10">
+
+                    <Label Grid.Column="0"
+                           VerticalOptions="Center"
+                           FontSize="Medium"
+                           Text="X" />
+                    <Label Grid.Column="1"
+                           VerticalOptions="Center"
+                           FontSize="Medium"
+                           Text="All" />
+                    <Label Grid.Column="2"
+                           VerticalOptions="Center"
+                           FontSize="Medium"
+                           Text="12" />
+
+                    <Label Grid.Column="0" Grid.Row="1"
+                           VerticalOptions="Center"
+                           FontSize="Medium"
+                           Text="X" />
+                    <Label Grid.Column="1" Grid.Row="1"
+                           VerticalOptions="Center"
+                           FontSize="Medium"
+                           Text="Today" />
+                    <Label Grid.Column="2" Grid.Row="1"
+                           VerticalOptions="Center"
+                           FontSize="Medium"
+                           Text="12" />
+
+                    <VisualStateManager.VisualStateGroups>
+                        <VisualStateGroup Name="CommonStates">
+                            <VisualState Name="Normal"></VisualState>
+                            <VisualState Name="Selected">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="#413f43" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateManager.VisualStateGroups>
+                </Grid>
+
+                <CollectionView x:Name="foldersCollectionView"
+                                Grid.Row="2"
+                                SelectionChanged="SelectableItemsView_OnSelectionChanged"
+                                ItemsSource="{Binding GroupedFolders}"
+                                IsGrouped="True"
+                                SelectionMode="Single">
+
+                    <CollectionView.GroupHeaderTemplate>
+                        <DataTemplate x:DataType="tr:Grouping(m:Folder, m:Blog)">
+                            <Grid Padding="10" Margin="0, 10, 0, 0"
+                                  ColumnDefinitions="*, Auto">
+
+                                <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                                       FontAttributes="Bold"
+                                       FontSize="Large"
+                                       Text="{Binding Key.Name}"
+                                       VerticalOptions="Center" />
+                                <Label Grid.Row="0" Grid.Column="1"
+                                       VerticalOptions="Center"
+                                       HorizontalOptions="End"
+                                       FontAttributes="Bold"
+                                       FontSize="Large"
+                                       Text="{Binding Key.Count}" />
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.GroupHeaderTemplate>
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="m:Blog">
+                            <Grid Padding="10" ColumnDefinitions="Auto, *, Auto" ColumnSpacing="10">
+                                <Border HeightRequest="40"
+                                        WidthRequest="40"
+                                        StrokeShape="RoundRectangle 10"
+                                        StrokeThickness="2"
+                                        BackgroundColor="Azure"
+                                        VerticalOptions="Center"
+                                        HorizontalOptions="Center">
+                                    <Image Source="{Binding Icon}" Aspect="AspectFill" />
+                                </Border>
+
+                                <Label Grid.Column="1"
+                                       VerticalOptions="Center"
+                                       FontSize="Medium"
+                                       Text="{Binding Title}" />
+
+                                <Label Grid.Column="2"
+                                       VerticalOptions="Center"
+                                       FontSize="Medium"
+                                       Text="{Binding Count}" />
+
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup Name="CommonStates">
+                                        <VisualState Name="Normal"></VisualState>
+                                        <VisualState Name="Selected">
+                                            <VisualState.Setters>
+                                                <Setter Property="BackgroundColor" Value="#413f43" />
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+            </Grid>
+
+        </Border>
+
+
+        <Border Grid.Column="1"
+                BackgroundColor="#353935"
+                Padding="20">
+
+            <CollectionView x:Name="postsCollectionView"
+                            SelectionChanged="PostsCollectionView_OnSelectionChanged"
+                            SelectionMode="Single">
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="m:Post">
+
+                        <Grid Padding="10"
+                              RowDefinitions="25, Auto, 120, Auto, 2"
+                              RowSpacing="10"
+                              ColumnSpacing="10">
+
+                            <Grid Grid.Row="0"
+                                  Margin="5"
+                                  ColumnSpacing="10"
+                                  ColumnDefinitions="20, *, 40">
+
+                                <Border HeightRequest="30"
+                                        WidthRequest="30"
+                                        StrokeShape="RoundRectangle 5"
+                                        StrokeThickness="2"
+                                        BackgroundColor="Azure"
+                                        VerticalOptions="Center"
+                                        HorizontalOptions="Center">
+                                    <Image Source="{Binding Blog.Icon}" Aspect="AspectFill" />
+                                </Border>
+
+                                <Label Grid.Column="1"
+                                       Text="{Binding Blog.Title}"
+                                       FontSize="Small" />
+
+                                <Label Grid.Column="2"
+                                       Text="{Binding DateTime}"
+                                       FontSize="Small" />
+                            </Grid>
+
+
+                            <Label Grid.Row="1"
+                                   Text="{Binding Title}"
+                                   FontSize="Medium"
+                                   FontAttributes="Bold" />
+
+                            <Border Grid.Row="2"
+                                    StrokeShape="RoundRectangle 10"
+                                    VerticalOptions="Center"
+                                    HorizontalOptions="Center">
+                                <Image Source="{Binding Image}" Aspect="AspectFill" />
+                            </Border>
+
+
+                            <Label Grid.Row="3"
+                                   Text="{Binding Description}"
+                                   MaxLines="4"
+                                   FontAttributes="Bold"
+                                   LineBreakMode="TailTruncation" />
+
+                            <Border Grid.Row="4" BackgroundColor="#CCCCCC" />
+
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup Name="CommonStates">
+                                    <VisualState Name="Normal"></VisualState>
+                                    <VisualState Name="Selected">
+                                        <VisualState.Setters>
+                                            <Setter Property="BackgroundColor" Value="#413f43" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Border>
+
+        <Border Grid.Column="2"
+                Padding="10"
+                StrokeShape="RoundRectangle 10">
+            
+            <WebView x:Name="webView"
+                     IsVisible="False" />
+        </Border>
+    </Grid>
+
+
+</ContentPage>
