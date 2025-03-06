@@ -6,6 +6,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:vm="clr-namespace:TheReader.ViewModels"
              xmlns:m="clr-namespace:TheReader.Models"
+             xmlns:converters="clr-namespace:TheReader.Views.Converters"
              xmlns:tr="clr-namespace:TheReader"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              BackgroundColor="Transparent"
@@ -15,62 +16,65 @@
         <vm:MainViewModel />
     </ContentPage.BindingContext>
 
-    <Grid ColumnDefinitions="2*, 2*, 6*">
+    <ContentPage.Resources>
+        <converters:StringToVisibleConverter x:Key="stringToVisibleConverter" />
+    </ContentPage.Resources>
+
+    <Grid ColumnDefinitions="500, 500, *">
 
         <Border Grid.Column="0"
                 BackgroundColor="#343434"
                 Padding="25">
-            <Grid RowDefinitions="80, 100, *">
 
-                <Rectangle Grid.Row="0" Fill="Blue" />
+            <Grid RowDefinitions="80, Auto, *, 20">
 
-                <Grid Grid.Row="1"
-                      Padding="10"
-                      ColumnDefinitions="Auto, *, Auto"
-                      RowDefinitions="40, 40"
-                      ColumnSpacing="10">
+                <Rectangle Grid.Row="0" Fill="Transparent" />
 
-                    <Label Grid.Column="0"
-                           VerticalOptions="Center"
-                           FontSize="Medium"
-                           Text="X" />
-                    <Label Grid.Column="1"
-                           VerticalOptions="Center"
-                           FontSize="Medium"
-                           Text="All" />
-                    <Label Grid.Column="2"
-                           VerticalOptions="Center"
-                           FontSize="Medium"
-                           Text="12" />
+                <CollectionView x:Name="filtersCollectionView"
+                                Grid.Row="1"
+                                Margin="0, 0, 0, 20"
+                                VerticalOptions="Fill"
+                                SelectionChanged="FiltersCollectionView_OnSelectionChanged"
+                                ItemsSource="{Binding Filters}"
+                                SelectionMode="Single">
 
-                    <Label Grid.Column="0" Grid.Row="1"
-                           VerticalOptions="Center"
-                           FontSize="Medium"
-                           Text="X" />
-                    <Label Grid.Column="1" Grid.Row="1"
-                           VerticalOptions="Center"
-                           FontSize="Medium"
-                           Text="Today" />
-                    <Label Grid.Column="2" Grid.Row="1"
-                           VerticalOptions="Center"
-                           FontSize="Medium"
-                           Text="12" />
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="m:FilterItem">
+                            <Grid Padding="10" ColumnDefinitions="*, Auto" ColumnSpacing="10">
+                                <Label Grid.Column="0"
+                                       VerticalOptions="Center"
+                                       FontAttributes="Bold"
+                                       FontSize="25"
+                                       Text="{Binding Title}" />
 
-                    <VisualStateManager.VisualStateGroups>
-                        <VisualStateGroup Name="CommonStates">
-                            <VisualState Name="Normal"></VisualState>
-                            <VisualState Name="Selected">
-                                <VisualState.Setters>
-                                    <Setter Property="BackgroundColor" Value="#413f43" />
-                                </VisualState.Setters>
-                            </VisualState>
-                        </VisualStateGroup>
-                    </VisualStateManager.VisualStateGroups>
-                </Grid>
+                                <Label Grid.Column="1"
+                                       VerticalOptions="Center"
+                                       FontAttributes="Bold"
+                                       FontSize="25"
+                                       Text="{Binding Count}" />
+
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup Name="CommonStates">
+                                        <VisualState Name="Normal">
+                                            <VisualState.Setters>
+                                                <Setter Property="BackgroundColor" Value="Transparent" />
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                        <VisualState Name="Selected">
+                                            <VisualState.Setters>
+                                                <Setter Property="BackgroundColor" Value="#413f43" />
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
 
                 <CollectionView x:Name="foldersCollectionView"
                                 Grid.Row="2"
-                                SelectionChanged="SelectableItemsView_OnSelectionChanged"
+                                SelectionChanged="FoldersCollectionView_OnSelectionChanged"
                                 ItemsSource="{Binding GroupedFolders}"
                                 IsGrouped="True"
                                 SelectionMode="Single">
@@ -81,15 +85,13 @@
                                   ColumnDefinitions="*, Auto">
 
                                 <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
-                                       FontAttributes="Bold"
-                                       FontSize="Large"
+                                       FontSize="22"
                                        Text="{Binding Key.Name}"
                                        VerticalOptions="Center" />
                                 <Label Grid.Row="0" Grid.Column="1"
                                        VerticalOptions="Center"
                                        HorizontalOptions="End"
-                                       FontAttributes="Bold"
-                                       FontSize="Large"
+                                       FontSize="20"
                                        Text="{Binding Key.Count}" />
                             </Grid>
                         </DataTemplate>
@@ -120,7 +122,11 @@
 
                                 <VisualStateManager.VisualStateGroups>
                                     <VisualStateGroup Name="CommonStates">
-                                        <VisualState Name="Normal"></VisualState>
+                                        <VisualState Name="Normal">
+                                            <VisualState.Setters>
+                                                <Setter Property="BackgroundColor" Value="Transparent" />
+                                            </VisualState.Setters>
+                                        </VisualState>
                                         <VisualState Name="Selected">
                                             <VisualState.Setters>
                                                 <Setter Property="BackgroundColor" Value="#413f43" />
@@ -133,13 +139,32 @@
                     </CollectionView.ItemTemplate>
                 </CollectionView>
 
+                <Button Grid.Row="3"
+                        Margin="-10,-5,0,5"
+                        WidthRequest="60"
+                        Text="+"
+                        BackgroundColor="#FFFFFF"
+                        TextColor="#7393B3"
+                        FontSize="30"
+                        FontAttributes="Bold"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Start"
+                        CornerRadius="20">
+                
+                    <FlyoutBase.ContextFlyout>
+                        <MenuFlyout>
+                            <MenuFlyoutItem Text="Add Subscription" />
+                            <MenuFlyoutItem Text="Add Folder" />
+                        </MenuFlyout>
+                    </FlyoutBase.ContextFlyout>
+                </Button>
+
             </Grid>
 
         </Border>
 
-
         <Border Grid.Column="1"
-                BackgroundColor="#353935"
+                BackgroundColor="#343434"
                 Padding="20">
 
             <CollectionView x:Name="postsCollectionView"
@@ -150,17 +175,19 @@
                     <DataTemplate x:DataType="m:Post">
 
                         <Grid Padding="10"
-                              RowDefinitions="25, Auto, 120, Auto, 2"
+                              RowDefinitions="Auto, Auto, Auto, Auto, 2"
                               RowSpacing="10"
                               ColumnSpacing="10">
 
                             <Grid Grid.Row="0"
-                                  Margin="5"
+                                  Margin="0,5,0,5"
                                   ColumnSpacing="10"
+                                  RowDefinitions="40"
                                   ColumnDefinitions="20, *, 40">
 
                                 <Border HeightRequest="30"
                                         WidthRequest="30"
+                                        Margin="5,0,0,0"
                                         StrokeShape="RoundRectangle 5"
                                         StrokeThickness="2"
                                         BackgroundColor="Azure"
@@ -171,10 +198,12 @@
 
                                 <Label Grid.Column="1"
                                        Text="{Binding Blog.Title}"
+                                       VerticalOptions="Center"
                                        FontSize="Small" />
 
                                 <Label Grid.Column="2"
-                                       Text="{Binding DateTime}"
+                                       Text="{Binding DateTime, StringFormat='{0:dd/MM}'}"
+                                       VerticalOptions="Center"
                                        FontSize="Small" />
                             </Grid>
 
@@ -182,27 +211,35 @@
                             <Label Grid.Row="1"
                                    Text="{Binding Title}"
                                    FontSize="Medium"
+                                   MaxLines="2"
+                                   LineBreakMode="TailTruncation"
                                    FontAttributes="Bold" />
 
                             <Border Grid.Row="2"
                                     StrokeShape="RoundRectangle 10"
+                                    HeightRequest="120"
                                     VerticalOptions="Center"
-                                    HorizontalOptions="Center">
+                                    HorizontalOptions="Center"
+                                    IsVisible="{Binding Image, Converter={StaticResource stringToVisibleConverter}}">
                                 <Image Source="{Binding Image}" Aspect="AspectFill" />
                             </Border>
 
 
                             <Label Grid.Row="3"
                                    Text="{Binding Description}"
-                                   MaxLines="4"
                                    FontAttributes="Bold"
+                                   MaxLines="4"
                                    LineBreakMode="TailTruncation" />
 
                             <Border Grid.Row="4" BackgroundColor="#CCCCCC" />
 
                             <VisualStateManager.VisualStateGroups>
                                 <VisualStateGroup Name="CommonStates">
-                                    <VisualState Name="Normal"></VisualState>
+                                    <VisualState Name="Normal">
+                                        <VisualState.Setters>
+                                            <Setter Property="BackgroundColor" Value="Transparent" />
+                                        </VisualState.Setters>
+                                    </VisualState>
                                     <VisualState Name="Selected">
                                         <VisualState.Setters>
                                             <Setter Property="BackgroundColor" Value="#413f43" />
@@ -217,12 +254,13 @@
         </Border>
 
         <Border Grid.Column="2"
-                Padding="10"
-                StrokeShape="RoundRectangle 10">
-            
+                BackgroundColor="#343434"
+                Padding="10">
+
             <WebView x:Name="webView"
                      IsVisible="False" />
         </Border>
+
     </Grid>
 
 

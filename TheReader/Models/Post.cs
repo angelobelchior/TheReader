@@ -14,6 +14,8 @@ public partial class Post : ObservableObject
 
     public DateTime DateTime { get; set; }
 
+    public bool IsToday => DateTime.Date == DateTime.Today;
+
     public static Post Create(
         string url,
         string image,

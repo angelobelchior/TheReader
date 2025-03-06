@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+               xmlns:popups="clr-namespace:TheReader.Views.Controls"
+               x:Class="TheReader.Views.Controls.FoldersControl">
+
+    <toolkit:Popup.Resources>
+        <Style TargetType="{x:Type popups:FoldersControl}">
+            <Setter Property="Size" Value="500,500" />
+            <Setter Property="HorizontalOptions" Value="Center" />
+            <Setter Property="VerticalOptions" Value="Start" />
+            <Setter Property="CanBeDismissedByTappingOutsideOfPopup" Value="False" />
+        </Style>
+    </toolkit:Popup.Resources>
+
+    <VerticalStackLayout>
+        <Label Text="This is a very important message! Do you agree?" />
+        <Button Text="Yes" />
+        <Button Text="No" />
+    </VerticalStackLayout>
+
+</toolkit:Popup>

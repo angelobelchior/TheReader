@@ -8,16 +8,16 @@ public partial class Folder : ObservableObject
 
     [ObservableProperty] private int _count;
 
-    public ObservableCollection<Blog> Items { get; set; } = [];
+    public ObservableCollection<Blog> Blogs { get; set; } = [];
 
-    public static Folder Create(string folderName, params Blog[] items)
+    public static Folder Create(string folderName, params Blog[] blogs)
     {
         var folder = new Folder
         {
             Id = Guid.NewGuid(),
             Name = folderName,
-            Count = items.Sum(i => i.Count),
-            Items = new ObservableCollection<Blog>(items)
+            Count = blogs.Sum(i => i.Count),
+            Blogs = new ObservableCollection<Blog>(blogs)
         };
 
         return folder;
