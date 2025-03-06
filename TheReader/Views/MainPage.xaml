@@ -21,15 +21,11 @@
     </ContentPage.Resources>
 
     <Grid ColumnDefinitions="500, 500, *">
-
         <Border Grid.Column="0"
                 BackgroundColor="#343434"
                 Padding="25">
-
             <Grid RowDefinitions="80, Auto, *, 20">
-
                 <Rectangle Grid.Row="0" Fill="Transparent" />
-
                 <CollectionView x:Name="filtersCollectionView"
                                 Grid.Row="1"
                                 Margin="0, 0, 0, 20"
@@ -37,108 +33,61 @@
                                 SelectionChanged="FiltersCollectionView_OnSelectionChanged"
                                 ItemsSource="{Binding Filters}"
                                 SelectionMode="Single">
-
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="m:FilterItem">
-                            <Grid Padding="10" ColumnDefinitions="*, Auto" ColumnSpacing="10">
+                            <Grid Style="{StaticResource CollectionSelectedRowStyle}"
+                                  Padding="10"
+                                  ColumnDefinitions="*, Auto"
+                                  ColumnSpacing="10">
                                 <Label Grid.Column="0"
-                                       VerticalOptions="Center"
-                                       FontAttributes="Bold"
-                                       FontSize="25"
+                                       Style="{StaticResource H1}"
                                        Text="{Binding Title}" />
-
                                 <Label Grid.Column="1"
-                                       VerticalOptions="Center"
-                                       FontAttributes="Bold"
-                                       FontSize="25"
+                                       Style="{StaticResource H1}"
                                        Text="{Binding Count}" />
-
-                                <VisualStateManager.VisualStateGroups>
-                                    <VisualStateGroup Name="CommonStates">
-                                        <VisualState Name="Normal">
-                                            <VisualState.Setters>
-                                                <Setter Property="BackgroundColor" Value="Transparent" />
-                                            </VisualState.Setters>
-                                        </VisualState>
-                                        <VisualState Name="Selected">
-                                            <VisualState.Setters>
-                                                <Setter Property="BackgroundColor" Value="#413f43" />
-                                            </VisualState.Setters>
-                                        </VisualState>
-                                    </VisualStateGroup>
-                                </VisualStateManager.VisualStateGroups>
                             </Grid>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
-
                 <CollectionView x:Name="foldersCollectionView"
                                 Grid.Row="2"
                                 SelectionChanged="FoldersCollectionView_OnSelectionChanged"
                                 ItemsSource="{Binding GroupedFolders}"
                                 IsGrouped="True"
                                 SelectionMode="Single">
-
                     <CollectionView.GroupHeaderTemplate>
                         <DataTemplate x:DataType="tr:Grouping(m:Folder, m:Blog)">
                             <Grid Padding="10" Margin="0, 10, 0, 0"
                                   ColumnDefinitions="*, Auto">
-
                                 <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
-                                       FontSize="22"
-                                       Text="{Binding Key.Name}"
-                                       VerticalOptions="Center" />
+                                       Style="{StaticResource H2}"
+                                       Text="{Binding Key.Name}" />
                                 <Label Grid.Row="0" Grid.Column="1"
-                                       VerticalOptions="Center"
+                                       Style="{StaticResource H3}"
                                        HorizontalOptions="End"
-                                       FontSize="20"
                                        Text="{Binding Key.Count}" />
                             </Grid>
                         </DataTemplate>
                     </CollectionView.GroupHeaderTemplate>
-
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="m:Blog">
-                            <Grid Padding="10" ColumnDefinitions="Auto, *, Auto" ColumnSpacing="10">
-                                <Border HeightRequest="40"
-                                        WidthRequest="40"
-                                        StrokeShape="RoundRectangle 10"
-                                        StrokeThickness="2"
-                                        BackgroundColor="Azure"
-                                        VerticalOptions="Center"
-                                        HorizontalOptions="Center">
+                            <Grid Style="{StaticResource CollectionSelectedRowStyle}"
+                                  Padding="10"
+                                  ColumnDefinitions="Auto, *, Auto"
+                                  ColumnSpacing="10">
+                                <Border Style="{StaticResource RoundedImageMedium}">
                                     <Image Source="{Binding Icon}" Aspect="AspectFill" />
                                 </Border>
-
                                 <Label Grid.Column="1"
-                                       VerticalOptions="Center"
-                                       FontSize="Medium"
+                                       Style="{StaticResource H3}"
                                        Text="{Binding Title}" />
-
                                 <Label Grid.Column="2"
-                                       VerticalOptions="Center"
-                                       FontSize="Medium"
+                                       Style="{StaticResource H3}"
                                        Text="{Binding Count}" />
-
-                                <VisualStateManager.VisualStateGroups>
-                                    <VisualStateGroup Name="CommonStates">
-                                        <VisualState Name="Normal">
-                                            <VisualState.Setters>
-                                                <Setter Property="BackgroundColor" Value="Transparent" />
-                                            </VisualState.Setters>
-                                        </VisualState>
-                                        <VisualState Name="Selected">
-                                            <VisualState.Setters>
-                                                <Setter Property="BackgroundColor" Value="#413f43" />
-                                            </VisualState.Setters>
-                                        </VisualState>
-                                    </VisualStateGroup>
-                                </VisualStateManager.VisualStateGroups>
                             </Grid>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
-
                 <Button Grid.Row="3"
                         Margin="-10,-5,0,5"
                         WidthRequest="60"
@@ -150,7 +99,6 @@
                         VerticalOptions="Center"
                         HorizontalOptions="Start"
                         CornerRadius="20">
-                
                     <FlyoutBase.ContextFlyout>
                         <MenuFlyout>
                             <MenuFlyoutItem Text="Add Subscription" />
@@ -158,63 +106,42 @@
                         </MenuFlyout>
                     </FlyoutBase.ContextFlyout>
                 </Button>
-
             </Grid>
-
         </Border>
-
         <Border Grid.Column="1"
                 BackgroundColor="#343434"
                 Padding="20">
-
             <CollectionView x:Name="postsCollectionView"
                             SelectionChanged="PostsCollectionView_OnSelectionChanged"
                             SelectionMode="Single">
-
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="m:Post">
-
                         <Grid Padding="10"
+                              Style="{StaticResource CollectionSelectedRowStyle}"
                               RowDefinitions="Auto, Auto, Auto, Auto, 2"
                               RowSpacing="10"
                               ColumnSpacing="10">
-
                             <Grid Grid.Row="0"
                                   Margin="0,5,0,5"
                                   ColumnSpacing="10"
                                   RowDefinitions="40"
                                   ColumnDefinitions="20, *, 40">
-
-                                <Border HeightRequest="30"
-                                        WidthRequest="30"
-                                        Margin="5,0,0,0"
-                                        StrokeShape="RoundRectangle 5"
-                                        StrokeThickness="2"
-                                        BackgroundColor="Azure"
-                                        VerticalOptions="Center"
-                                        HorizontalOptions="Center">
+                                <Border Style="{StaticResource RoundedImageSmall}"
+                                        Margin="5,0,0,0">
                                     <Image Source="{Binding Blog.Icon}" Aspect="AspectFill" />
                                 </Border>
-
                                 <Label Grid.Column="1"
+                                       Style="{StaticResource H5}"
                                        Text="{Binding Blog.Title}"
-                                       VerticalOptions="Center"
-                                       FontSize="Small" />
-
+                                       VerticalOptions="Center" />
                                 <Label Grid.Column="2"
-                                       Text="{Binding DateTime, StringFormat='{0:dd/MM}'}"
-                                       VerticalOptions="Center"
-                                       FontSize="Small" />
+                                       Style="{StaticResource H5}"
+                                       Text="{Binding DateTime, StringFormat='{0:dd/MM}'}" />
                             </Grid>
-
-
                             <Label Grid.Row="1"
+                                   Style="{StaticResource H3}"
                                    Text="{Binding Title}"
-                                   FontSize="Medium"
-                                   MaxLines="2"
-                                   LineBreakMode="TailTruncation"
-                                   FontAttributes="Bold" />
-
+                                   MaxLines="2" />
                             <Border Grid.Row="2"
                                     StrokeShape="RoundRectangle 10"
                                     HeightRequest="120"
@@ -223,44 +150,22 @@
                                     IsVisible="{Binding Image, Converter={StaticResource stringToVisibleConverter}}">
                                 <Image Source="{Binding Image}" Aspect="AspectFill" />
                             </Border>
-
-
                             <Label Grid.Row="3"
+                                   Style="{StaticResource H4}"
                                    Text="{Binding Description}"
-                                   FontAttributes="Bold"
-                                   MaxLines="4"
-                                   LineBreakMode="TailTruncation" />
-
+                                   MaxLines="4" />
                             <Border Grid.Row="4" BackgroundColor="#CCCCCC" />
-
-                            <VisualStateManager.VisualStateGroups>
-                                <VisualStateGroup Name="CommonStates">
-                                    <VisualState Name="Normal">
-                                        <VisualState.Setters>
-                                            <Setter Property="BackgroundColor" Value="Transparent" />
-                                        </VisualState.Setters>
-                                    </VisualState>
-                                    <VisualState Name="Selected">
-                                        <VisualState.Setters>
-                                            <Setter Property="BackgroundColor" Value="#413f43" />
-                                        </VisualState.Setters>
-                                    </VisualState>
-                                </VisualStateGroup>
-                            </VisualStateManager.VisualStateGroups>
                         </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
         </Border>
-
         <Border Grid.Column="2"
                 BackgroundColor="#343434"
                 Padding="10">
-
             <WebView x:Name="webView"
                      IsVisible="False" />
         </Border>
-
     </Grid>
 
 

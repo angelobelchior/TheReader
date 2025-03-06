@@ -4,6 +4,71 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
+    <Style TargetType="Label" x:Key="H">
+            <Setter Property="VerticalOptions" Value="Center" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="LineBreakMode" Value="TailTruncation" />
+        </Style>
+
+        <Style TargetType="Label" x:Key="H1" BasedOn="{StaticResource H}">
+            <Setter Property="FontSize" Value="25" />
+        </Style>
+
+        <Style TargetType="Label" x:Key="H2" BasedOn="{StaticResource H}">
+            <Setter Property="FontSize" Value="22" />
+        </Style>
+
+        <Style TargetType="Label" x:Key="H3" BasedOn="{StaticResource H}">
+            <Setter Property="FontSize" Value="Medium" />
+        </Style>
+
+        <Style TargetType="Label" x:Key="H4" BasedOn="{StaticResource H}">
+            <Setter Property="FontSize" Value="15" />
+        </Style>
+
+        <Style TargetType="Label" x:Key="H5" BasedOn="{StaticResource H}">
+            <Setter Property="FontSize" Value="Small" />
+        </Style>
+
+        <Style TargetType="Grid" x:Key="CollectionSelectedRowStyle">
+            <Setter Property="VisualStateManager.VisualStateGroups">
+                <VisualStateGroupList>
+                    <VisualStateGroup Name="CommonStates">
+                        <VisualState Name="Normal">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor" Value="Transparent" />
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState Name="Selected">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor" Value="#413f43" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter>
+        </Style>
+
+        <Style TargetType="Border" x:Key="RoundedImage">
+            <Setter Property="StrokeThickness" Value="2" />
+            <Setter Property="BackgroundColor" Value="Azure" />
+            <Setter Property="VerticalOptions" Value="Center" />
+            <Setter Property="HorizontalOptions" Value="Center" />
+        </Style>
+
+        <Style TargetType="Border" x:Key="RoundedImageMedium" BasedOn="{StaticResource RoundedImage}">
+            <Setter Property="HeightRequest" Value="40" />
+            <Setter Property="WidthRequest" Value="40" />
+            <Setter Property="StrokeShape" Value="RoundRectangle 10" />
+        </Style>
+
+        <Style TargetType="Border" x:Key="RoundedImageSmall" BasedOn="{StaticResource RoundedImage}">
+            <Setter Property="HeightRequest" Value="30" />
+            <Setter Property="WidthRequest" Value="30" />
+            <Setter Property="StrokeShape" Value="RoundRectangle 5" />
+        </Style>
+    
+    <!-- -->
     <Style TargetType="ActivityIndicator">
         <Setter Property="Color" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}" />
     </Style>
